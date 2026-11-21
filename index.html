@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAMZI.exe | Night City</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="scanlines"></div>
+  <div class="grid"></div>
+  <header class="topbar">
+    <a class="logo" href="#home">RAMZI<span>.exe</span></a>
+    <div class="top-status"><i></i> SYSTEM {{ profile.status }}</div>
+    <button class="menu-btn" id="menuBtn" aria-label="Ouvrir le menu">☰</button>
+  </header>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="side-label">NAVIGATION</div>
+    <a class="nav-link active" href="#home"><b>01</b> ACCUEIL</a>
+    <a class="nav-link" href="#profile"><b>02</b> PROFIL</a>
+    <a class="nav-link" href="#projects"><b>03</b> MISSIONS</a>
+    <a class="nav-link" href="#interests"><b>04</b> CENTRES D'INTÉRÊT</a>
+    <div class="side-bottom">
+      <div class="mini-chip">NIGHT CITY // FR</div>
+      <small>PERSONAL DATABASE<br>VERSION 2.0.77</small>
+    </div>
+  </aside>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="pulse"></span> CONNEXION ÉTABLIE — NIGHT CITY</p>
+        <h1>WAKE UP,<br><span>NETRUNNER.</span></h1>
+        <p class="intro">Bienvenue dans mon univers numérique.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#profile">ACCÉDER AU PROFIL <span>↗</span></a>
+          <a class="btn ghost" href="#projects">VOIR LES MISSIONS</a>
+        </div>
+        <div class="hero-meta"><span>USER: {{ profile.name }}</span><span>ACCESS: PERSONNEL</span><span>LOCATION: NIGHT CITY</span></div>
+      </div>
+      <div class="hero-visual">
+        <div class="sun"></div>
+        <div class="city city-back"></div><div class="city city-front"></div>
+        <div class="holo-card">
+          <div class="holo-top"><span>SUBJECT PROFILE</span><span>№ 077</span></div>
+          <div class="avatar">R<span>.</span></div>
+          <h2>{{ profile.name }}</h2>
+          <p>{{ profile.handle }}</p>
+          <div class="holo-line"></div>
+          <div class="holo-bottom"><span>LVL {{ profile.level }}</span><span class="online">● ONLINE</span></div>
+        </div>
+        <div class="crosshair">＋</div>
+      </div>
+    </section>
+
+    <section class="section" id="profile">
+      <div class="section-head"><p class="eyebrow">01 // IDENTIFICATION</p><h2>PLAYER <span>PROFILE</span></h2></div>
+      <div class="profile-grid">
+        <article class="panel identity">
+          <div class="panel-tag">IDENTITY DATA <span>● LIVE</span></div>
+          <h3>{{ profile.name }}<em>_</em></h3>
+          <p class="role">{{ profile.class }}</p>
+          <p class="bio">{{ profile.bio }}</p>
+          <div class="data-row"><span>LEVEL</span><strong>{{ profile.level }}</strong></div>
+          <div class="data-row"><span>STATUS</span><strong class="yellow">ACTIVE</strong></div>
+          <div class="data-row"><span>FACTION</span><strong>SOLO RUNNER</strong></div>
+        </article>
+        <article class="panel stats">
+          <div class="panel-tag">NEURAL ANALYSIS <span>SCAN 100%</span></div>
+          {% for stat in profile.stats %}
+          <div class="stat">
+            <div class="stat-label"><span>{{ stat.label }}</span><b>{{ stat.value }}%</b></div>
+            <div class="bar"><span style="width: {{ stat.value }}%"></span></div>
+          </div>
+          {% endfor %}
+          <p class="tiny-note">* Statistiques fictives pour le design du profil.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="projects">
+      <div class="section-head"><p class="eyebrow">02 // OBJECTIVES</p><h2>ACTIVE <span>MISSIONS</span></h2></div>
+      <div class="mission-grid">
+        {% for project in profile.projects %}
+        <article class="panel mission">
+          <div class="mission-top"><span>{{ project.type }}</span><b>↗</b></div>
+          <div class="mission-icon">⌁</div>
+          <h3>{{ project.name }}</h3>
+          <p>{{ project.description }}</p>
+          <div class="mission-footer"><span>MISSION LOGGED</span><span class="yellow">IN PROGRESS</span></div>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="section" id="interests">
+      <div class="section-head"><p class="eyebrow">03 // PERSONAL DATA</p><h2>AREAS OF <span>INTEREST</span></h2></div>
+      <div class="interest-list">
+        {% for interest in profile.interests %}
+        <div class="interest"><span class="interest-mark">▸</span>{{ interest }}<span class="interest-code">UNLOCKED</span></div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="terminal panel">
+      <div class="terminal-head"><span><i></i> RAMZI_TERMINAL</span><span>LOCAL ACCESS</span></div>
+      <div class="terminal-body" id="terminalText">
+        <p>&gt; Initialisation du système...</p>
+        <p>&gt; Utilisateur détecté : {{ profile.name }}</p>
+        <p>&gt; Connexion à Night City établie<span class="cursor">_</span></p>
+      </div>
+      <form id="commandForm" class="command-form">
+        <label for="command">&gt;</label><input id="command" autocomplete="off" placeholder="Tape help puis Entrée..." maxlength="40">
+      </form>
+    </section>
+
+    <footer><span>RAMZI.exe // VERSION 2.0.77</span><span>BUILT IN NIGHT CITY <b>✦</b></span></footer>
+  </main>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
